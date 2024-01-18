@@ -1,8 +1,8 @@
 import traceback, sys, random, argparse, os
 from gooey import Gooey
-import logging
 from openpyxl import load_workbook
 from openpyxl.utils.cell import column_index_from_string
+import logging
 from collections import namedtuple
 
 class FilterAboveOrEqualToLevel(object):
@@ -99,7 +99,7 @@ def get_workers_decisions_and_inventory_dict(projects_xlsx):
             break
         inventory[prize_name] = prize_count
 
-
+    # This is a loop on responses_sheet
     for person in responses_sheet['B'][1:]:
         name = person.internal_value
         choice1 = responses_sheet['C'][person.row - 1].internal_value
