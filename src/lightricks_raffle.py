@@ -5,6 +5,13 @@ from openpyxl import load_workbook
 from openpyxl.utils.cell import column_index_from_string
 from collections import namedtuple
 
+class FilterBelowOrEqualToLevel(object):
+    def __init__(self, level):
+        self.__level = level
+
+    def filter(self, record):
+        return record.levelno <= self.__level
+
 class FilterAboveOrEqualToLevel(object):
     def __init__(self, level):
         self.__level = level
@@ -12,13 +19,6 @@ class FilterAboveOrEqualToLevel(object):
     def filter(self, record):
         return record.levelno >= self.__level
 
-
-class FilterBelowOrEqualToLevel(object):
-    def __init__(self, level):
-        self.__level = level
-
-    def filter(self, record):
-        return record.levelno <= self.__level
 
 # Globals:
 PEOPLE_CHOICE_TUPLE = namedtuple('PEOPLE_CHOICE_TUPLE', ['NAME', 'ROW', 'CHOICES', 'DECISION'])
@@ -56,10 +56,10 @@ def setup_logging(name, debug_file_location, stdout_log_level):
 
     output_to_screen_handler = logging.StreamHandler(stream=sys.stdout)
     output_to_screen_stderr_handler = logging.StreamHandler(stream=sys.stderr)
-    output_to_screen_handler.setFormatter(log_fmt)
-    output_to_screen_stderr_handler.setFormatter(log_fmt)
     output_to_screen_handler.setLevel(stdout_log_level)
     output_to_screen_stderr_handler.setLevel(logging.ERROR)
+    output_to_screen_handler.setFormatter(log_fmt)
+    output_to_screen_stderr_handler.setFormatter(log_fmt)
     output_to_screen_handler.addFilter(FilterBelowOrEqualToLevel(logging.WARNING))
     output_to_screen_stderr_handler.addFilter(FilterAboveOrEqualToLevel(logging.ERROR))
     logger.addHandler(output_to_screen_handler)
